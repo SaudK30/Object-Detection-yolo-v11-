@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 from ultralytics import YOLO
 
 # === PATH CONFIGURATION ===
-original_dataset_path = r"C:\Users\Saud Masood Khan\Desktop\New fo\VOC2012_train_val"
+original_dataset_path = r"VOC2012_train_val" //add your path properly to not have errors
 yolo_dataset_path = 'yolo_dataset'
 
 # === CREATE REQUIRED FOLDERS ===
