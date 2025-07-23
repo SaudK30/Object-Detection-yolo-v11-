@@ -1,6 +1,6 @@
 
-train: C:\Users\Saud Masood Khan\Desktop\New fo\yolo_dataset\images\train
-val: C:\Users\Saud Masood Khan\Desktop\New fo\yolo_dataset\images\val
+train: \yolo_dataset\images\train
+val: \yolo_dataset\images\val 
 
 nc: 20
 names: ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor']
