@@ -4,28 +4,21 @@ import pyttsx3
 import time
 from ultralytics import YOLO
 
-# ==============================================================================
-# --- CONFIGURATION ---
-# ==============================================================================
 
-# --- Paths and Thresholds ---
 MODEL_PATH = r"C:\Users\Saud Masood Khan\Desktop\yolov2\runs\detect\yolov11_pascal_voc_final5\weights\last.pt"
 IMAGE_PATH = r"C:\Users\Saud Masood Khan\Desktop\0 to 19 image classification\Aeroplane-0\2007_000738.jpg"
-SCORE_THRESHOLD = 0.46  # <-- Same as your R-CNN script
+SCORE_THRESHOLD = 0.46  
 
-# --- Pascal VOC Classes (MUST match the 'label_dict' from your training script) ---
+
 CLASS_NAMES = [
     'aeroplane', 'bicycle', 'bird', 'boat', 'bottle',
     'bus', 'car', 'cat', 'chair', 'cow',
     'diningtable', 'dog', 'horse', 'motorbike', 'person',
     'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor'
 ]
-# Create a random color for each class
+
 COLORS = np.random.uniform(0, 255, size=(len(CLASS_NAMES), 3))
 
-# ==============================================================================
-# --- HELPER FUNCTIONS (TTS & Drawing) ---
-# ==============================================================================
 
 def initialize_tts_engine():
     """Initializes and configures the text-to-speech engine."""
@@ -45,9 +38,6 @@ def check_overlap(rect1, rect2):
         return False
     return True
 
-# ==============================================================================
-# --- CORE PREDICTION LOGIC (Ported from R-CNN, adapted for YOLO) ---
-# ==============================================================================
 
 def predict_on_image(image, model, score_threshold):
     """
@@ -71,7 +61,7 @@ def predict_on_image(image, model, score_threshold):
     detection_labels_indices = labels_idx[keep]
     detection_scores = scores[keep] # Keep scores for drawing
 
-    # 3. Generate Audio Description (Identical logic to your R-CNN script)
+    # 3. Generate Audio Description 
     image_height, image_width, _ = image.shape
     descriptions = []
 
@@ -105,7 +95,7 @@ def predict_on_image(image, model, score_threshold):
 
     spoken_summary = ". ".join(descriptions)
 
-    # 4. Draw Detections on Image (Identical logic to your R-CNN script)
+    # 4. Draw Detections on Image
     drawn_label_rects = [] # Keep track of where labels are drawn
     for i, box_float in enumerate(detections):
         box = box_float.astype(np.int32) # Convert to int for drawing
@@ -174,7 +164,7 @@ def predict_on_image(image, model, score_threshold):
     return image, spoken_summary
 
 # ==============================================================================
-# --- MAIN EXECUTION LOOP (Identical to your R-CNN script) ---
+# --- MAIN EXECUTION LOOP
 # ==============================================================================
 
 if __name__ == "__main__":
@@ -211,3 +201,4 @@ if __name__ == "__main__":
     cv2.waitKey(0) 
     cv2.destroyAllWindows()
     print("Program ended.")
+
