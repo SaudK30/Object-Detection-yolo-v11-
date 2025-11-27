@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 from ultralytics import YOLO
 
 # === PATH CONFIGURATION ===
-original_dataset_path = r"VOC2012_train_val" //add your path properly to not have errors
+original_dataset_path = r"C:\Users\Saud Masood Khan\Desktop\New fo\VOC2012_train_val"
 yolo_dataset_path = 'yolo_dataset'
 
 # === CREATE REQUIRED FOLDERS ===
@@ -27,7 +27,7 @@ annotations_dir = os.path.join(original_dataset_path, 'VOC2012_train_val', 'Anno
 if not os.path.exists(jpeg_images_dir) or not os.path.exists(annotations_dir):
     raise FileNotFoundError(f"Check if {jpeg_images_dir} or {annotations_dir} exists.")
 
-# === GET IMAGE IDs ===
+# === GET IMAGE IDS ===
 image_filenames = os.listdir(jpeg_images_dir)
 image_ids = [os.path.splitext(f)[0] for f in image_filenames if f.endswith('.jpg')]
 random.seed(42)
@@ -99,12 +99,24 @@ names: {list(label_dict.keys())}
 with open(os.path.join(yolo_dataset_path, 'data.yaml'), 'w') as f:
     f.write(yaml_content)
 
-# === TRAIN THE MODEL ===
-model = YOLO('yolo11n.pt')
-model.train(
-    data=os.path.join(yolo_dataset_path, 'data.yaml'),
-    epochs=1,  # Change this for full training
-    imgsz=640,
-    batch=4,
-    name='yolov11_pascal_voc_final'
-)
+# === TRAIN THE MODEL AND PRINT FINAL F1-SCORE ===
+if __name__ == "__main__":
+    model = YOLO('yolo11n.pt')
+
+    # Train the model normally
+    model.train(
+        data=os.path.join(yolo_dataset_path, 'data.yaml'),
+        epochs=50,         # adjust epochs as needed
+        imgsz=640,
+        batch=4,
+        device="0",       # use GPU
+        name='yolov11_pascal_voc_final',
+        workers=0,
+    )
+
+    # Compute and print final F1-score
+    results = model.val()  # runs validation on val set
+    P = results.metrics['P']
+    R = results.metrics['R']
+    F1 = 2 * P * R / (P + R + 1e-16)
+    print(f"Final F1-score: {F1:.4f}")
